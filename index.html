@@ -1,13 +1,182 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cambio Único</title>
-  <script src="script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cambio Único - Evaluador Social</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; background-color: #f8f9fa; }
+    h1, h2, h3 { color: #333; }
+    fieldset { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+    legend { font-weight: bold; }
+    label { display: block; margin-top: 8px; }
+    select, input[type="number"] { width: 100%; padding: 5px; margin-top: 5px; }
+    button { padding: 10px 15px; margin-top: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+    #resultado { background-color: #fff; padding: 20px; border: 1px solid #ccc; }
+  </style>
 </head>
 <body>
-  <h1>Evaluación Social Completa</h1>
-  <p>Esta app permite evaluar comportamientos sociales y emocionales con alta precisión.</p>
+
+<h1>Cambio Único - Evaluador Social</h1>
+<form id="evaluacionForm">
+  <fieldset>
+    <legend>Edad</legend>
+    <label for="edad_usuario">Edad del usuario:</label>
+    <input type="number" id="edad_usuario" name="edad_usuario" min="5" max="70" required>
+  </fieldset>
+
+  <fieldset>
+    <legend>Convivencia Familiar</legend>
+    <label for="vive_con">¿Con quién vive actualmente?</label>
+    <select id="vive_con" name="vive_con">
+      <option value="ambos_padres">Ambos padres</option>
+      <option value="madre_sola">Solo con la madre</option>
+      <option value="padre_solo">Solo con el padre</option>
+      <option value="madre_fallecida">Madre fallecida</option>
+      <option value="padre_fallecido">Padre fallecido</option>
+      <option value="otros">Otros (tíos, abuelos, etc.)</option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <legend>Frecuencia de Interacciones Sociales</legend>
+    <label for="interaccionSemanal">¿Cuántas veces por semana interactúa con amigos o familia?</label>
+    <input type="number" id="interaccionSemanal" name="interaccionSemanal" min="0" required>
+    <label for="amigosRedes">¿Con cuántas personas se comunica por redes sociales?</label>
+    <input type="number" id="amigosRedes" name="amigosRedes" min="0">
+    <label for="amigosDirecto">¿Con cuántas personas habla en persona regularmente?</label>
+    <input type="number" id="amigosDirecto" name="amigosDirecto" min="0">
+  </fieldset>
+
+  <fieldset>
+    <legend>Emoción</legend>
+    <label for="emocionSocial">Selecciona la emoción predominante:</label>
+    <select id="emocionSocial" name="emocionSocial">
+      <option value="alegría">Alegría</option>
+      <option value="tristeza">Tristeza</option>
+      <option value="miedo">Miedo</option>
+      <option value="ira">Ira</option>
+      <option value="asco">Asco</option>
+      <option value="sorpresa">Sorpresa</option>
+      <option value="ansiedad">Ansiedad</option>
+      <option value="calma">Calma</option>
+      <option value="euforia">Euforia</option>
+      <option value="vergüenza">Vergüenza</option>
+      <option value="culpa">Culpa</option>
+      <option value="orgullo">Orgullo</option>
+      <option value="compasión">Compasión</option>
+      <option value="resiliencia">Resiliencia</option>
+      <option value="inseguridad">Inseguridad</option>
+      <option value="confianza">Confianza</option>
+      <option value="ambivalencia">Ambivalencia</option>
+      <option value="agotamiento">Agotamiento</option>
+      <option value="indiferencia">Indiferencia</option>
+      <option value="esperanza">Esperanza</option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <legend>Calidad de Interacciones Sociales</legend>
+    <label><input type="checkbox" name="calidad_social" value="habilidades_sociales"> Comunicación efectiva</label>
+    <label><input type="checkbox" name="calidad_social" value="regulacion_emocional"> Regulación emocional</label>
+    <label><input type="checkbox" name="calidad_social" value="escucha_respetuosa"> Escucha activa</label>
+    <label><input type="checkbox" name="calidad_social" value="empatia"> Empatía</label>
+    <label><input type="checkbox" name="calidad_social" value="adaptacion_social"> Adaptación</label>
+    <label><input type="checkbox" name="calidad_social" value="relaciones_saludables"> Relaciones saludables</label>
+    <label><input type="checkbox" name="calidad_social" value="autenticidad"> Autenticidad</label>
+  </fieldset>
+
+  <button type="submit">Evaluar</button>
+</form>
+
+<div id="resultado">
+  <h3>🧠 Diagnóstico Integral</h3>
+  <p id="diagnosticoTexto"></p>
+  <h3>📈 Pronóstico Esperado</h3>
+  <p id="pronosticoTexto"></p>
+  <h3>🎭 Reacciones Observadas</h3>
+  <p id="reaccionTexto"></p>
+</div>
+
+<script>
+  document.getElementById("evaluacionForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const edadUsuario = parseInt(document.getElementById("edad_usuario").value);
+    const viveCon = document.getElementById("vive_con").value;
+    const interaccionSemanal = parseInt(document.getElementById("interaccionSemanal").value);
+    const emocionSocial = document.getElementById("emocionSocial").value.toLowerCase();
+    const amigosRedes = parseInt(document.getElementById("amigosRedes").value || 0);
+    const amigosDirecto = parseInt(document.getElementById("amigosDirecto").value || 0);
+    const calidadChecks = Array.from(document.querySelectorAll('input[name="calidad_social"]:checked')).map(cb => cb.value);
+    const puntajeCalidad = calidadChecks.length;
+
+    let diagnostico = "";
+    let pronostico = "";
+    let reaccion = "";
+
+    const totalInteracciones = interaccionSemanal + amigosRedes + amigosDirecto;
+
+    if (totalInteracciones < 5 && puntajeCalidad < 3) {
+      diagnostico += "Patrón de aislamiento emocional y social. ";
+      pronostico += "Alta probabilidad de retraimiento progresivo. ";
+      reaccion += "Puede evitar reuniones, mostrar evitación de contacto visual, y retraimiento. ";
+    } else if (totalInteracciones >= 10 && puntajeCalidad >= 5) {
+      diagnostico += "Interacciones sociales funcionales y emocionalmente ricas. ";
+      pronostico += "Estabilidad emocional probable. ";
+      reaccion += "Participación activa, disposición al diálogo y buena gestión emocional. ";
+    }
+
+    if (["tristeza", "ansiedad", "miedo", "ira", "vergüenza", "culpa", "inseguridad", "agotamiento", "indiferencia"].includes(emocionSocial)) {
+      diagnostico += "Presencia de emociones negativas o desreguladoras. ";
+      pronostico += "Riesgo emocional moderado si se perpetúan estas emociones. ";
+      reaccion += "Posibles conductas de evasión, irritabilidad o retraimiento. ";
+    } else if (["alegría", "confianza", "resiliencia", "esperanza", "euforia", "calma", "orgullo", "compasión"].includes(emocionSocial)) {
+      diagnostico += "Estado emocional positivo predominante. ";
+      pronostico += "Buen desarrollo personal y social si se sostiene. ";
+      reaccion += "Apertura al diálogo, motivación, afecto visible. ";
+    }
+
+    if (viveCon === "madre_sola") {
+      diagnostico += "Entorno centrado en figura materna. ";
+      pronostico += "Dependencia emocional moderada posible. ";
+      reaccion += "Búsqueda de validación materna, miedo a decepcionar. ";
+    } else if (viveCon === "ambos_padres") {
+      diagnostico += "Entorno potencialmente equilibrado. ";
+      pronostico += "Mayor estabilidad conductual. ";
+      reaccion += "Diálogo fluido, roles definidos en casa. ";
+    } else if (viveCon === "padre_solo") {
+      diagnostico += "Falta de influencia materna. ";
+      pronostico += "Necesidad de acompañamiento emocional específico. ";
+      reaccion += "Inseguridad emocional o compensación conductual. ";
+    } else if (viveCon === "madre_fallecida" || viveCon === "padre_fallecido") {
+      diagnostico += "Duelo parental no resuelto. ";
+      pronostico += "Posible disociación emocional o trauma. ";
+      reaccion += "Silencios prolongados, sensibilidad extrema ante temas familiares. ";
+    }
+
+    if (edadUsuario >= 5 && edadUsuario < 12) {
+      diagnostico += "Niñez media. ";
+      pronostico += "Alta maleabilidad emocional y social. ";
+    } else if (edadUsuario >= 12 && edadUsuario < 18) {
+      diagnostico += "Adolescencia. ";
+      pronostico += "Alta sensibilidad a la presión social y validación externa. ";
+    } else if (edadUsuario >= 18 && edadUsuario < 30) {
+      diagnostico += "Inicio de adultez. ";
+      pronostico += "Desarrollo de identidad e independencia emocional. ";
+    } else if (edadUsuario >= 30 && edadUsuario < 50) {
+      diagnostico += "Adultez intermedia. ";
+      pronostico += "Estabilidad si hay equilibrio laboral y afectivo. ";
+    } else {
+      diagnostico += "Adultez mayor. ";
+      pronostico += "Riesgo de aislamiento si se reduce contacto social. ";
+    }
+
+    document.getElementById("diagnosticoTexto").textContent = diagnostico;
+    document.getElementById("pronosticoTexto").textContent = pronostico;
+    document.getElementById("reaccionTexto").textContent = reaccion;
+  });
+</script>
+
 </body>
 </html>
